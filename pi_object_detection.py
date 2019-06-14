@@ -171,8 +171,8 @@ while True:
             label = "{}: {:.2f}%".format(CLASSES[idx],
                 confidence * 100)
 
-            if idx not in VEICULO_CLASSES and idx not in PEDESTRE_CLASSES:
-                print(label)
+            #if idx not in VEICULO_CLASSES and idx not in PEDESTRE_CLASSES:
+            #    print(label)
 			
             cv2.rectangle(frame, (startX, startY), (endX, endY),
                 COLORS[idx], 2)
