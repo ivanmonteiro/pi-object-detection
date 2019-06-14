@@ -22,7 +22,7 @@ ap.add_argument("--prototxt", required=False,
 ap.add_argument("--model", required=False,
     help="path to Caffe pre-trained model",
 	default='models/ssd_mobilenet_v1_0.75_depth_300x300_coco14_sync_2018_07_03/frozen_inference_graph.pb')
-ap.add_argument("--confidence", type=float, default=0.55,
+ap.add_argument("--confidence", type=float, default=0.6,
     help="minimum probability to filter weak detections")
 args = vars(ap.parse_args())
 
@@ -33,6 +33,7 @@ def classify_frame(net, inputQueue, outputQueue):
     while True:
         # check to see if there is a frame in our input queue
         if not inputQueue.empty():
+            start = time.time()
             # grab the frame from the input queue, resize it, and
             # construct a blob from it
             frame = inputQueue.get()
@@ -48,6 +49,9 @@ def classify_frame(net, inputQueue, outputQueue):
 
             # write the detections to the output queue
             outputQueue.put(detections)
+            end = time.time()
+            print("[INFO] classification took {:.5} seconds".format(end - start))
+
 
 # initialize the list of class labels MobileNet SSD was trained to
 # detect, then generate a set of bounding box colors for each class
