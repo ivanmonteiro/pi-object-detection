@@ -15,7 +15,7 @@ import cv2
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
-ap.add_argument("-v", "--video", help="path to video file. If empty, camera's stream will be used")
+ap.add_argument("--video", help="path to video file. If empty, camera's stream will be used")
 ap.add_argument("-p", "--prototxt", required=False,
     help="path to Caffe 'deploy' prototxt file")
 ap.add_argument("-m", "--model", required=False,
@@ -108,7 +108,7 @@ p.start()
 # and initialize the FPS counter
 print("[INFO] starting video stream...")
 # Open video file or capture device. 
-if args["video"]:
+if args.video:
 	vs = FileVideoStream(args.video).start()
 else:
 	#vs = VideoStream(usePiCamera=True).start()
