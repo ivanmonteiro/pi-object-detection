@@ -13,6 +13,7 @@ import imutils
 import time
 import cv2
 
+NET_INPUT_SIZE = 128
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("--video", help="path to video file. If empty, camera's stream will be used")
@@ -35,10 +36,10 @@ def classify_frame(net, inputQueue, outputQueue):
             # construct a blob from it
             frame = inputQueue.get()
             #frame = cv2.resize(frame, (128, 128))
-            frame_resized = imutils.resize(frame, width=128)
+            frame_resized = imutils.resize(frame, width=NET_INPUT_SIZE)
             #blob = cv2.dnn.blobFromImage(frame, 0.007843,
             #    (300, 300), 127.5)
-            blob = cv2.dnn.blobFromImage(frame, size=(128, 128), swapRB=True, crop=False)
+            blob = cv2.dnn.blobFromImage(frame, size=(NET_INPUT_SIZE, NET_INPUT_SIZE), swapRB=True, crop=False)
             # set the blob as input to our deep learning object
             # detector and obtain the detections
             net.setInput(blob)
@@ -124,7 +125,7 @@ while True:
     # grab the frame from the threaded video stream, resize it, and
     # grab its imensions
     frame = vs.read()
-    frame = imutils.resize(frame, width=300)
+    frame = imutils.resize(frame, width=NET_INPUT_SIZE)
     (fH, fW) = frame.shape[:2]
 
     # if the input queue *is* empty, give the current frame to
