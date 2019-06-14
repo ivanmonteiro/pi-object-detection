@@ -73,7 +73,7 @@ CLASSES = {0: 'background',
 
 #COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
 COLORS = []
-VEICULO_CLASSES = [2, 3, 4, 6]
+VEICULO_CLASSES = [2, 3, 4, 6, 9]
 VEICULO_COR = (230, 230, 0)
 PEDESTRE_CLASSES = [1]
 PEDESTRE_COR = (255, 40, 255)
