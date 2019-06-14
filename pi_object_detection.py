@@ -125,8 +125,11 @@ while True:
     # grab the frame from the threaded video stream, resize it, and
     # grab its imensions
     frame = vs.read()
-    if not frame:
+
+	#exit if video ended
+    if frame is None:
         break
+
     frame = imutils.resize(frame, width=300)
     frame_for_net = cv2.resize(frame, (NET_INPUT_SIZE, NET_INPUT_SIZE))
     (fH, fW) = frame.shape[:2]
