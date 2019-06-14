@@ -15,7 +15,7 @@ import cv2
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
-ap.add_argument("-v", help="path to video file. If empty, camera's stream will be used")
+ap.add_argument("-v", "--video", help="path to video file. If empty, camera's stream will be used")
 ap.add_argument("-p", "--prototxt", required=False,
     help="path to Caffe 'deploy' prototxt file")
 ap.add_argument("-m", "--model", required=False,
