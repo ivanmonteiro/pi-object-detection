@@ -26,7 +26,7 @@ ap.add_argument("--confidence", type=float, default=0.6,
     help="minimum probability to filter weak detections")
 args = vars(ap.parse_args())
 
-NET_INPUT_SIZE = 128
+NET_INPUT_SIZE = 300
 
 def classify_frame(net, inputQueue, outputQueue):
     # keep looping
