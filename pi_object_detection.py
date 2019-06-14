@@ -16,13 +16,13 @@ import cv2
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("--video", help="path to video file. If empty, camera's stream will be used")
-ap.add_argument("-p", "--prototxt", required=False,
+ap.add_argument("--prototxt", required=False,
     help="path to Caffe 'deploy' prototxt file",
 	default='models/ssd_mobilenet_v1_0.75_depth_300x300_coco14_sync_2018_07_03/graph.pbtxt')
-ap.add_argument("-m", "--model", required=False,
+ap.add_argument("--model", required=False,
     help="path to Caffe pre-trained model",
 	default='models/ssd_mobilenet_v1_0.75_depth_300x300_coco14_sync_2018_07_03/frozen_inference_graph.pb')
-ap.add_argument("-c", "--confidence", type=float, default=0.55,
+ap.add_argument("--confidence", type=float, default=0.55,
     help="minimum probability to filter weak detections")
 args = vars(ap.parse_args())
 
