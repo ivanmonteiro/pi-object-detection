@@ -94,7 +94,11 @@ VEICULO_COR = (230.0, 230.0, 0.0)
 PEDESTRE_CLASSES = [1]
 PEDESTRE_COR = (255.0, 40.0, 255.0)
 
-COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
+#COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
+COLORS = []
+for c in CLASSES:
+    COLORS.put((255, 255, 255))
+
 
 for classe_index in VEICULO_CLASSES:
 	COLORS[classe_index] = (230.0, 230.0, 0.0)
