@@ -85,15 +85,18 @@ CLASSES = {0: 'background',
               86: 'vase', 87: 'scissors', 88: 'teddy bear', 89: 'hair drier', 90: 'toothbrush'}
 
 VEICULO_CLASSES = [2, 3, 4, 6]
-VEICULO_COR = (230,230,0)
+VEICULO_COR = (230, 230, 0)
 PEDESTRE_CLASSES = [1]
-PEDESTRE_COR = (255,40,255)
+PEDESTRE_COR = (255, 40, 255)
 
 COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
 
 for classe_index in VEICULO_CLASSES:
 	COLORS[classe_index] = VEICULO_COR
 
+for classe_index in PEDESTRE_CLASSES:
+	COLORS[classe_index] = VEICULO_COR
+print(COLORS)
 
 # load our serialized model from disk
 print("[INFO] loading model...")
