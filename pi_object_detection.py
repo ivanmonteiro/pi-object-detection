@@ -108,8 +108,8 @@ p.start()
 # and initialize the FPS counter
 print("[INFO] starting video stream...")
 # Open video file or capture device. 
-if args.video:
-	vs = FileVideoStream(args.video).start()
+if args["video"]:
+	vs = FileVideoStream(args["video"]).start()
 else:
 	#vs = VideoStream(usePiCamera=True).start()
     vs = VideoStream(src=0).start()
