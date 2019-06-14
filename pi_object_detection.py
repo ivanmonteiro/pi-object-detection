@@ -17,11 +17,9 @@ import cv2
 ap = argparse.ArgumentParser()
 ap.add_argument("--video", help="path to video file. If empty, camera's stream will be used")
 ap.add_argument("--prototxt", required=False,
-    help="path to Caffe 'deploy' prototxt file",
-	default='models/ssd_mobilenet_v1_0.75_depth_300x300_coco14_sync_2018_07_03/graph.pbtxt')
+    help="path to Caffe 'deploy' prototxt file")
 ap.add_argument("--model", required=False,
-    help="path to Caffe pre-trained model",
-	default='models/ssd_mobilenet_v1_0.75_depth_300x300_coco14_sync_2018_07_03/frozen_inference_graph.pb')
+    help="path to Caffe pre-trained model")
 ap.add_argument("--confidence", type=float, default=0.6,
     help="minimum probability to filter weak detections")
 args = vars(ap.parse_args())
@@ -33,12 +31,12 @@ def classify_frame(net, inputQueue, outputQueue):
     while True:
         # check to see if there is a frame in our input queue
         if not inputQueue.empty():
-            start = time.time()
+            #start = time.time()
             # grab the frame from the input queue, resize it, and
             # construct a blob from it
             frame = inputQueue.get()
-            #frame = cv2.resize(frame, (NET_INPUT_SIZE, NET_INPUT_SIZE))
-            frame = imutils.resize(frame, width=NET_INPUT_SIZE)
+            frame = cv2.resize(frame, (NET_INPUT_SIZE, NET_INPUT_SIZE))
+            #frame = imutils.resize(frame, width=NET_INPUT_SIZE)
             #blob = cv2.dnn.blobFromImage(frame, 0.007843,
             #    (300, 300), 127.5)
             blob = cv2.dnn.blobFromImage(frame, size=(NET_INPUT_SIZE, NET_INPUT_SIZE), swapRB=True, crop=False)
@@ -49,28 +47,12 @@ def classify_frame(net, inputQueue, outputQueue):
 
             # write the detections to the output queue
             outputQueue.put(detections)
-            end = time.time()
-            print("[INFO] classification took {:.5} seconds".format(end - start))
+            #end = time.time()
+            #print("[INFO] took {:.5} seconds".format(end - start))
 
 
 # initialize the list of class labels MobileNet SSD was trained to
 # detect, then generate a set of bounding box colors for each class
-"""
-CLASSES = ["background", "aviao", "bicicleta", "passaro", "barco",
-    "garrafa", "onibus", "carro", "gato", "cadeira", "vaca", "mesa",
-    "cachorro", "cavalo", "moto", "pessoa", "planta", "ovelha",
-    "sofa", "trem", "tv"]
-
-CLASSES_FILTRAR = ["onibus", "carro", "moto", "bicicleta", "pessoa"]
-"""
-"""
-CLASSES = { 0: 'background',
-    1: 'pessoa', 2: 'bicycle', 3: 'carro', 4: 'moto',
-    5: 'bottle', 6: 'onibus', 7: 'car', 8: 'carro', 9: 'chair',
-    10: 'semaforo', 11: 'diningtable', 12: 'dog', 13: 'horse',
-    14: 'motorbike', 15: 'person', 16: 'pottedplant',
-    17: 'sheep', 18: 'sofa', 19: 'train', 20: 'tvmonitor', 21: 'tvmonitor', 22: 'tvmonitor', 23: 'tvmonitor' }
-"""
 CLASSES = {0: 'background',
               1: 'pessoa', 2: 'bicycle', 3: 'veiculo', 4: 'motorcycle', 5: 'airplane', 6: 'veiculo',
               7: 'train', 8: 'veiculo', 9: 'veiculo', 10: 'traffic light', 11: 'fire hydrant',
@@ -188,6 +170,7 @@ while True:
             #if CLASSES[idx] in CLASSES_FILTRAR:
             label = "{}: {:.2f}%".format(CLASSES[idx],
                 confidence * 100)
+            print(label)
             cv2.rectangle(frame, (startX, startY), (endX, endY),
                 COLORS[idx], 2)
             y = startY - 15 if startY - 15 > 15 else startY + 15
