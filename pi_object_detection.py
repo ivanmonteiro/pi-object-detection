@@ -170,7 +170,10 @@ while True:
             #if CLASSES[idx] in CLASSES_FILTRAR:
             label = "{}: {:.2f}%".format(CLASSES[idx],
                 confidence * 100)
-            print(label)
+
+            if idx not in VEICULO_CLASSES and id not in PEDESTRE_CLASSES:
+                print(label)
+			
             cv2.rectangle(frame, (startX, startY), (endX, endY),
                 COLORS[idx], 2)
             y = startY - 15 if startY - 15 > 15 else startY + 15
