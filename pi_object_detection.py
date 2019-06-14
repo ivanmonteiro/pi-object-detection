@@ -21,10 +21,11 @@ def classify_frame(net, inputQueue, outputQueue):
             # grab the frame from the input queue, resize it, and
             # construct a blob from it
             frame = inputQueue.get()
-            frame = cv2.resize(frame, (300, 300))
-            blob = cv2.dnn.blobFromImage(frame, 0.007843,
-                (300, 300), 127.5)
-
+            #frame = cv2.resize(frame, (128, 128))
+            frame_resized = imutils.resize(frame, width=128)
+            #blob = cv2.dnn.blobFromImage(frame, 0.007843,
+            #    (300, 300), 127.5)
+            blob = cv2.dnn.blobFromImage(frame, size=(128, 128), swapRB=True, crop=False)
             # set the blob as input to our deep learning object
             # detector and obtain the detections
             net.setInput(blob)
@@ -39,24 +40,54 @@ ap.add_argument("-p", "--prototxt", required=True,
     help="path to Caffe 'deploy' prototxt file")
 ap.add_argument("-m", "--model", required=True,
     help="path to Caffe pre-trained model")
-ap.add_argument("-c", "--confidence", type=float, default=0.2,
+ap.add_argument("-c", "--confidence", type=float, default=0.55,
     help="minimum probability to filter weak detections")
 args = vars(ap.parse_args())
 
 # initialize the list of class labels MobileNet SSD was trained to
 # detect, then generate a set of bounding box colors for each class
+"""
 CLASSES = ["background", "aviao", "bicicleta", "passaro", "barco",
     "garrafa", "onibus", "carro", "gato", "cadeira", "vaca", "mesa",
     "cachorro", "cavalo", "moto", "pessoa", "planta", "ovelha",
     "sofa", "trem", "tv"]
 
 CLASSES_FILTRAR = ["onibus", "carro", "moto", "bicicleta", "pessoa"]
+"""
+"""
+CLASSES = { 0: 'background',
+    1: 'pessoa', 2: 'bicycle', 3: 'carro', 4: 'moto',
+    5: 'bottle', 6: 'onibus', 7: 'car', 8: 'carro', 9: 'chair',
+    10: 'semaforo', 11: 'diningtable', 12: 'dog', 13: 'horse',
+    14: 'motorbike', 15: 'person', 16: 'pottedplant',
+    17: 'sheep', 18: 'sofa', 19: 'train', 20: 'tvmonitor', 21: 'tvmonitor', 22: 'tvmonitor', 23: 'tvmonitor' }
+"""
+CLASSES = {0: 'background',
+              1: 'person', 2: 'bicycle', 3: 'car', 4: 'motorcycle', 5: 'airplane', 6: 'bus',
+              7: 'train', 8: 'truck', 9: 'boat', 10: 'traffic light', 11: 'fire hydrant',
+              13: 'stop sign', 14: 'parking meter', 15: 'bench', 16: 'bird', 17: 'cat',
+              18: 'dog', 19: 'horse', 20: 'sheep', 21: 'cow', 22: 'elephant', 23: 'bear',
+              24: 'zebra', 25: 'giraffe', 27: 'backpack', 28: 'umbrella', 31: 'handbag',
+              32: 'tie', 33: 'suitcase', 34: 'frisbee', 35: 'skis', 36: 'snowboard',
+              37: 'sports ball', 38: 'kite', 39: 'baseball bat', 40: 'baseball glove',
+              41: 'skateboard', 42: 'surfboard', 43: 'tennis racket', 44: 'bottle',
+              46: 'wine glass', 47: 'cup', 48: 'fork', 49: 'knife', 50: 'spoon',
+              51: 'bowl', 52: 'banana', 53: 'apple', 54: 'sandwich', 55: 'orange',
+              56: 'broccoli', 57: 'carrot', 58: 'hot dog', 59: 'pizza', 60: 'donut',
+              61: 'cake', 62: 'chair', 63: 'couch', 64: 'potted plant', 65: 'bed',
+              67: 'dining table', 70: 'toilet', 72: 'tv', 73: 'laptop', 74: 'mouse',
+              75: 'remote', 76: 'keyboard', 77: 'cell phone', 78: 'microwave', 79: 'oven',
+              80: 'toaster', 81: 'sink', 82: 'refrigerator', 84: 'book', 85: 'clock',
+              86: 'vase', 87: 'scissors', 88: 'teddy bear', 89: 'hair drier', 90: 'toothbrush'}
+
 
 COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
 
 # load our serialized model from disk
 print("[INFO] loading model...")
-net = cv2.dnn.readNetFromCaffe(args["prototxt"], args["model"])
+#net = cv2.dnn.readNetFromCaffe(args["prototxt"], args["model"])
+#net = cv2.dnn.readNetFromTensorflow('models/ssd_mobilenet_v1_coco_2017_11_17/frozen_inference_graph.pb', 'models/ssd_mobilenet_v1_coco_2017_11_17/ssd_mobilenet_v1_coco_2017_11_17.pbtxt')
+net = cv2.dnn.readNetFromTensorflow('models/ssd_mobilenet_v1_0.75_depth_300x300_coco14_sync_2018_07_03/frozen_inference_graph.pb', 'models/ssd_mobilenet_v1_0.75_depth_300x300_coco14_sync_2018_07_03/graph.pbtxt')
 
 # initialize the input queue (frames), output queue (detections),
 # and the list of actual detections returned by the child process
@@ -77,9 +108,14 @@ p.start()
 print("[INFO] starting video stream...")
 #vs = VideoStream(src=0).start()
 #vs = VideoStream(usePiCamera=True).start()
+
 #video_src = 'sample.mp4'
-video_src = 'ufpe01-60fps.mp4'
+#video_src = 'ufpe01-60fps.mp4'
+#video_src = 'set00_V013.avi'
+#video_src = 'ufpe01-30fps-cut01-240.mp4'
+video_src = 'ufpe02-cut.mp4'
 vs = FileVideoStream(video_src).start()
+
 time.sleep(2.0)
 fps = FPS().start()
 
@@ -123,14 +159,14 @@ while True:
             (startX, startY, endX, endY) = box.astype("int")
 
             # draw the prediction on the frame
-            if CLASSES[idx] in CLASSES_FILTRAR:
-                label = "{}: {:.2f}%".format(CLASSES[idx],
-                    confidence * 100)
-                cv2.rectangle(frame, (startX, startY), (endX, endY),
-                    COLORS[idx], 2)
-                y = startY - 15 if startY - 15 > 15 else startY + 15
-                cv2.putText(frame, label, (startX, y),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS[idx], 2)
+            #if CLASSES[idx] in CLASSES_FILTRAR:
+            label = "{}: {:.2f}%".format(CLASSES[idx],
+                confidence * 100)
+            cv2.rectangle(frame, (startX, startY), (endX, endY),
+                COLORS[idx], 2)
+            y = startY - 15 if startY - 15 > 15 else startY + 15
+            cv2.putText(frame, label, (startX, y),
+               cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS[idx], 2)
 
     # show the output frame
     cv2.imshow("Frame", frame)
