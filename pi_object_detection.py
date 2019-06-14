@@ -92,7 +92,7 @@ PEDESTRE_COR = (255,40,255)
 COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
 
 for classe_index in VEICULO_CLASSES:
-	colors[classe_index] = VEICULO_COR
+	COLORS[classe_index] = VEICULO_COR
 
 
 # load our serialized model from disk
