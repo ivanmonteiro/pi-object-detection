@@ -26,7 +26,7 @@ ap.add_argument("--confidence", type=float, default=0.6,
     help="minimum probability to filter weak detections")
 args = vars(ap.parse_args())
 
-NET_INPUT_SIZE = 64
+NET_INPUT_SIZE = 128
 
 def classify_frame(net, inputQueue, outputQueue):
     # keep looping
@@ -89,13 +89,14 @@ CLASSES = {0: 'background',
               80: 'toaster', 81: 'sink', 82: 'refrigerator', 84: 'book', 85: 'clock',
               86: 'vase', 87: 'scissors', 88: 'teddy bear', 89: 'hair drier', 90: 'toothbrush'}
 
+#COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
+COLORS = []
 VEICULO_CLASSES = [2, 3, 4, 6]
 VEICULO_COR = (230, 230, 0)
 PEDESTRE_CLASSES = [1]
 PEDESTRE_COR = (255, 40, 255)
-print(CLASSES)
-#COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
-COLORS = []
+OUTROS_COR = (255, 255, 255) 
+
 for c in CLASSES:
     if c in PEDESTRE_CLASSES:
         COLORS.append(PEDESTRE_COR)
@@ -103,16 +104,7 @@ for c in CLASSES:
         if c in VEICULO_CLASSES:
             COLORS.append(VEICULO_COR)
         else:
-            COLORS.append((255, 255, 255))
-
-"""
-for classe_index in VEICULO_CLASSES:
-	COLORS[classe_index] = (230.0, 230.0, 0.0)
-
-for classe_index in PEDESTRE_CLASSES:
-	COLORS[classe_index] = (255.0, 40.0, 255.0)
-"""
-
+            COLORS.append(OUTROS_COR)
 
 # load our serialized model from disk
 print("[INFO] loading model...")
