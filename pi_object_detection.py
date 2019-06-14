@@ -37,8 +37,8 @@ def classify_frame(net, inputQueue, outputQueue):
             # grab the frame from the input queue, resize it, and
             # construct a blob from it
             frame = inputQueue.get()
-            frame = cv2.resize(frame, (NET_INPUT_SIZE, NET_INPUT_SIZE))
-            #frame = imutils.resize(frame, width=NET_INPUT_SIZE)
+            #frame = cv2.resize(frame, (NET_INPUT_SIZE, NET_INPUT_SIZE))
+            frame = imutils.resize(frame, width=NET_INPUT_SIZE)
             #blob = cv2.dnn.blobFromImage(frame, 0.007843,
             #    (300, 300), 127.5)
             blob = cv2.dnn.blobFromImage(frame, size=(NET_INPUT_SIZE, NET_INPUT_SIZE), swapRB=True, crop=False)
