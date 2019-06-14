@@ -13,7 +13,6 @@ import imutils
 import time
 import cv2
 
-NET_INPUT_SIZE = 128
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("--video", help="path to video file. If empty, camera's stream will be used")
@@ -26,6 +25,8 @@ ap.add_argument("--model", required=False,
 ap.add_argument("--confidence", type=float, default=0.55,
     help="minimum probability to filter weak detections")
 args = vars(ap.parse_args())
+
+NET_INPUT_SIZE = 128
 
 def classify_frame(net, inputQueue, outputQueue):
     # keep looping
@@ -92,10 +93,10 @@ PEDESTRE_COR = (255.0, 40.0, 255.0)
 COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
 
 for classe_index in VEICULO_CLASSES:
-	COLORS[classe_index] = VEICULO_COR
+	COLORS[classe_index] = (230.0, 230.0, 0.0)
 
 for classe_index in PEDESTRE_CLASSES:
-	COLORS[classe_index] = VEICULO_COR
+	COLORS[classe_index] = (255.0, 40.0, 255.0)
 print(COLORS)
 
 # load our serialized model from disk
