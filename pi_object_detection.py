@@ -125,7 +125,7 @@ while True:
     # grab the frame from the threaded video stream, resize it, and
     # grab its imensions
     frame = vs.read()
-    frame = imutils.resize(frame, width=400)
+    frame = imutils.resize(frame, width=300)
     (fH, fW) = frame.shape[:2]
 
     # if the input queue *is* empty, give the current frame to
