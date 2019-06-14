@@ -54,7 +54,7 @@ def classify_frame(net, inputQueue, outputQueue):
 # initialize the list of class labels MobileNet SSD was trained to
 # detect, then generate a set of bounding box colors for each class
 CLASSES = {0: 'background',
-              1: 'pessoa', 2: 'bicycle', 3: 'veiculo', 4: 'motorcycle', 5: 'airplane', 6: 'veiculo',
+              1: 'pessoa', 2: 'veiculo', 3: 'veiculo', 4: 'veiculo', 5: 'airplane', 6: 'veiculo',
               7: 'train', 8: 'veiculo', 9: 'veiculo', 10: 'traffic light', 11: 'fire hydrant',
               13: 'stop sign', 14: 'parking meter', 15: 'bench', 16: 'bird', 17: 'cat',
               18: 'dog', 19: 'horse', 20: 'sheep', 21: 'cow', 22: 'elephant', 23: 'bear',
@@ -73,7 +73,7 @@ CLASSES = {0: 'background',
 
 #COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
 COLORS = []
-VEICULO_CLASSES = [2, 3, 4, 6, 9]
+VEICULO_CLASSES = [2, 3, 4, 6, 8, 9]
 VEICULO_COR = (0, 255, 255)
 PEDESTRE_CLASSES = [1]
 PEDESTRE_COR = (255, 40, 255)
