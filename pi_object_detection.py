@@ -17,9 +17,11 @@ import cv2
 ap = argparse.ArgumentParser()
 ap.add_argument("--video", help="path to video file. If empty, camera's stream will be used")
 ap.add_argument("-p", "--prototxt", required=False,
-    help="path to Caffe 'deploy' prototxt file")
+    help="path to Caffe 'deploy' prototxt file",
+	default="models/ssd_mobilenet_v1_0.75_depth_300x300_coco14_sync_2018_07_03/graph.pbtxt")
 ap.add_argument("-m", "--model", required=False,
-    help="path to Caffe pre-trained model")
+    help="path to Caffe pre-trained model",
+	default="models/ssd_mobilenet_v1_0.75_depth_300x300_coco14_sync_2018_07_03/frozen_inference_graph.pb")
 ap.add_argument("-c", "--confidence", type=float, default=0.55,
     help="minimum probability to filter weak detections")
 args = vars(ap.parse_args())
@@ -88,7 +90,8 @@ COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
 print("[INFO] loading model...")
 #net = cv2.dnn.readNetFromCaffe(args["prototxt"], args["model"])
 #net = cv2.dnn.readNetFromTensorflow('models/ssd_mobilenet_v1_coco_2017_11_17/frozen_inference_graph.pb', 'models/ssd_mobilenet_v1_coco_2017_11_17/ssd_mobilenet_v1_coco_2017_11_17.pbtxt')
-net = cv2.dnn.readNetFromTensorflow('models/ssd_mobilenet_v1_0.75_depth_300x300_coco14_sync_2018_07_03/frozen_inference_graph.pb', 'models/ssd_mobilenet_v1_0.75_depth_300x300_coco14_sync_2018_07_03/graph.pbtxt')
+#net = cv2.dnn.readNetFromTensorflow('models/ssd_mobilenet_v1_0.75_depth_300x300_coco14_sync_2018_07_03/frozen_inference_graph.pb', 'models/ssd_mobilenet_v1_0.75_depth_300x300_coco14_sync_2018_07_03/graph.pbtxt')
+net = cv2.dnn.readNetFromTensorflow(args["prototxt"], args["model"])
 
 # initialize the input queue (frames), output queue (detections),
 # and the list of actual detections returned by the child process
