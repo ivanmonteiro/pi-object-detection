@@ -13,6 +13,17 @@ import imutils
 import time
 import cv2
 
+# construct the argument parse and parse the arguments
+ap = argparse.ArgumentParser()
+ap.add_argument("-v", help="path to video file. If empty, camera's stream will be used")
+ap.add_argument("-p", "--prototxt", required=False,
+    help="path to Caffe 'deploy' prototxt file")
+ap.add_argument("-m", "--model", required=False,
+    help="path to Caffe pre-trained model")
+ap.add_argument("-c", "--confidence", type=float, default=0.55,
+    help="minimum probability to filter weak detections")
+args = vars(ap.parse_args())
+
 def classify_frame(net, inputQueue, outputQueue):
     # keep looping
     while True:
@@ -33,16 +44,6 @@ def classify_frame(net, inputQueue, outputQueue):
 
             # write the detections to the output queue
             outputQueue.put(detections)
-
-# construct the argument parse and parse the arguments
-ap = argparse.ArgumentParser()
-ap.add_argument("-p", "--prototxt", required=True,
-    help="path to Caffe 'deploy' prototxt file")
-ap.add_argument("-m", "--model", required=True,
-    help="path to Caffe pre-trained model")
-ap.add_argument("-c", "--confidence", type=float, default=0.55,
-    help="minimum probability to filter weak detections")
-args = vars(ap.parse_args())
 
 # initialize the list of class labels MobileNet SSD was trained to
 # detect, then generate a set of bounding box colors for each class
@@ -106,15 +107,12 @@ p.start()
 # initialize the video stream, allow the cammera sensor to warmup,
 # and initialize the FPS counter
 print("[INFO] starting video stream...")
-#vs = VideoStream(src=0).start()
-#vs = VideoStream(usePiCamera=True).start()
-
-#video_src = 'sample.mp4'
-#video_src = 'ufpe01-60fps.mp4'
-#video_src = 'set00_V013.avi'
-#video_src = 'ufpe01-30fps-cut01-240.mp4'
-video_src = 'ufpe02-cut.mp4'
-vs = FileVideoStream(video_src).start()
+# Open video file or capture device. 
+if args.video:
+	vs = FileVideoStream(args.video).start()
+else:
+	#vs = VideoStream(usePiCamera=True).start()
+    vs = VideoStream(src=0).start()
 
 time.sleep(2.0)
 fps = FPS().start()
