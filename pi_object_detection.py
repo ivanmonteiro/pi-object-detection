@@ -35,8 +35,8 @@ def classify_frame(net, inputQueue, outputQueue):
             # grab the frame from the input queue, resize it, and
             # construct a blob from it
             frame = inputQueue.get()
-            frame = cv2.resize(frame, (NET_INPUT_SIZE, NET_INPUT_SIZE))
-            #frame_resized = imutils.resize(frame, width=NET_INPUT_SIZE)
+            #frame = cv2.resize(frame, (NET_INPUT_SIZE, NET_INPUT_SIZE))
+            frame_resized = imutils.resize(frame, width=NET_INPUT_SIZE)
             #blob = cv2.dnn.blobFromImage(frame, 0.007843,
             #    (300, 300), 127.5)
             blob = cv2.dnn.blobFromImage(frame, size=(NET_INPUT_SIZE, NET_INPUT_SIZE), swapRB=True, crop=False)
@@ -125,13 +125,13 @@ while True:
     # grab the frame from the threaded video stream, resize it, and
     # grab its imensions
     frame = vs.read()
-    frame = imutils.resize(frame, width=NET_INPUT_SIZE)
+    frame_resized = imutils.resize(frame, width=NET_INPUT_SIZE)
     (fH, fW) = frame.shape[:2]
 
     # if the input queue *is* empty, give the current frame to
     # classify
     if inputQueue.empty():
-        inputQueue.put(frame)
+        inputQueue.put(frame_resized)
 
     # if the output queue *is not* empty, grab the detections
     if not outputQueue.empty():
