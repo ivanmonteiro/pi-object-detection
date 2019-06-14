@@ -66,8 +66,8 @@ CLASSES = { 0: 'background',
     17: 'sheep', 18: 'sofa', 19: 'train', 20: 'tvmonitor', 21: 'tvmonitor', 22: 'tvmonitor', 23: 'tvmonitor' }
 """
 CLASSES = {0: 'background',
-              1: 'person', 2: 'bicycle', 3: 'car', 4: 'motorcycle', 5: 'airplane', 6: 'bus',
-              7: 'train', 8: 'truck', 9: 'boat', 10: 'traffic light', 11: 'fire hydrant',
+              1: 'pessoa', 2: 'bicycle', 3: 'veiculo', 4: 'motorcycle', 5: 'airplane', 6: 'veiculo',
+              7: 'train', 8: 'veiculo', 9: 'veiculo', 10: 'traffic light', 11: 'fire hydrant',
               13: 'stop sign', 14: 'parking meter', 15: 'bench', 16: 'bird', 17: 'cat',
               18: 'dog', 19: 'horse', 20: 'sheep', 21: 'cow', 22: 'elephant', 23: 'bear',
               24: 'zebra', 25: 'giraffe', 27: 'backpack', 28: 'umbrella', 31: 'handbag',
@@ -89,9 +89,8 @@ COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
 # load our serialized model from disk
 print("[INFO] loading model...")
 #net = cv2.dnn.readNetFromCaffe(args["prototxt"], args["model"])
-net = cv2.dnn.readNetFromTensorflow('models/ssd_mobilenet_v1_coco_2017_11_17/frozen_inference_graph.pb', 'models/ssd_mobilenet_v1_coco_2017_11_17/ssd_mobilenet_v1_coco_2017_11_17.pbtxt')
-#net = cv2.dnn.readNetFromTensorflow('models/ssd_mobilenet_v1_0.75_depth_300x300_coco14_sync_2018_07_03/frozen_inference_graph.pb', 'models/ssd_mobilenet_v1_0.75_depth_300x300_coco14_sync_2018_07_03/graph.pbtxt')
-#net = cv2.dnn.readNetFromTensorflow(args["prototxt"], args["model"])
+#net = cv2.dnn.readNetFromTensorflow('models/ssd_mobilenet_v1_coco_2017_11_17/frozen_inference_graph.pb', 'models/ssd_mobilenet_v1_coco_2017_11_17/ssd_mobilenet_v1_coco_2017_11_17.pbtxt')
+net = cv2.dnn.readNetFromTensorflow('models/ssd_mobilenet_v1_0.75_depth_300x300_coco14_sync_2018_07_03/frozen_inference_graph.pb', 'models/ssd_mobilenet_v1_0.75_depth_300x300_coco14_sync_2018_07_03/graph.pbtxt')
 
 # initialize the input queue (frames), output queue (detections),
 # and the list of actual detections returned by the child process
