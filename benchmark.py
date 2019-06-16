@@ -20,7 +20,7 @@ ap.add_argument("-l", "--labels", required=False,
 	help="path to ImageNet labels (i.e., syn-sets)")
 args = vars(ap.parse_args())
 
-NET_INPUT_SIZE = 128
+NET_INPUT_SIZE = 300
 
 # load the class labels from disk
 #rows = open(args["labels"]).read().strip().split("\n")
